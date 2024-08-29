@@ -4,7 +4,7 @@ import styles from "./style.module.css";
 export function NavBar() {
   return (
     <nav className={styles.navbar}>
-      <NavLink className={styles.navlink} exact to="/home">
+      <NavLink className={styles.navlink} to="/home">
         Home
       </NavLink>
       <NavLink className={styles.navlink} to="/about">About</NavLink>
@@ -14,3 +14,5 @@ export function NavBar() {
     </nav>
   );
 }
+
+export default NavBar;
