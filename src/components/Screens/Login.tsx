@@ -3,7 +3,6 @@
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../../firebase";
 import { useUser } from "../UserContext";
-import "../Styling/Login.css";
 import TicTacToe from "./TicTacToe";
 import { TypeAnimation } from "react-type-animation";
 

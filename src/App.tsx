@@ -5,11 +5,15 @@ import logo from "./money_sign.png";
 import Posts from "./components/Screens/Post";
 import { NavBar } from "./components/NavBar";
 import Home from "./components/Screens/Home";
+import About from "./components/Screens/About";
+import Upload from "./components/Screens/Upload";
+import Reports from "./components/Screens/Reports";
+import Contact from "./components/Screens/Contact";
+
 import {
   BrowserRouter as Router,
   Route,
   Routes,
-  Navigate,
 } from "react-router-dom";
 import { UserProvider } from "./components/UserContext";
 
@@ -19,6 +23,10 @@ function App() {
       <Router>
         <Routes>
           <Route path="" element={<Home />} />
+          <Route path="home" element={<About />} />
+          <Route path="about" element={<Upload />} />
+          <Route path="upload" element={<Reports />} />
+          <Route path="reports" element={<Contact />} />
         </Routes>
       </Router>
     </UserProvider>

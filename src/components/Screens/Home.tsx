@@ -3,6 +3,12 @@ import NavBar from "../NavBar";
 import { useUser } from "../UserContext";
 import Login from "./Login";
 import duckImage from "../../assets/duck.png";
+import About from "./About";
+import Upload from "./Upload";
+import Reports from "./Reports";
+import Contact from "./Contact";
+
+import "../Styling/Home.css";
 
 export default function Dashboard() {
   const { user, logout } = useUser();
@@ -20,6 +26,14 @@ export default function Dashboard() {
           <button onClick={logout}>Log out</button>
           <br/><br/><br/>
           <NavBar />
+          <br/><br/><br/>
+          <About />
+          <br/><br/><br/>
+          <Upload />
+          <br/><br/><br/>
+          <Reports />
+          <br/><br/><br/>
+          <Contact />
         </div>
       ) : (
         // add the login screen
