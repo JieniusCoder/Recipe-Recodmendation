@@ -9,8 +9,8 @@ export default function Contact() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [submitted, setSubmitted] = useState(false);
-
   const form = useRef<HTMLFormElement>(null);
+
 
   //Email service using EmailJS
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -19,10 +19,11 @@ export default function Contact() {
     console.log("Name:", name);
     console.log("Email:", email);
     console.log("Message:", message);
+    console.log("Form:", form.current);
     setSubmitted(true);
 
     emailjs.sendForm('service_csm42zs', 'template_rqmz857', 
-        e.currentTarget, 'YhOmCTpyu2NtnafKR')
+        form.current as HTMLFormElement, 'YhOmCTpyu2NtnafKR')
     .then(
       (result) => {
         console.log(result.text);
@@ -45,7 +46,7 @@ export default function Contact() {
       {submitted && (
         <p>Thank you for your message! I'll get back to you soon.</p>
       )}
-      <form onSubmit={handleSubmit}>
+      <form ref={form} onSubmit={handleSubmit}>
         <div style={{ marginBottom: "1em" }}>
           <label htmlFor="name" style={{ color: "grey" }}>
             Name
@@ -53,6 +54,7 @@ export default function Contact() {
           <input
             type="text"
             id="name"
+            name = "from_name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
@@ -66,6 +68,7 @@ export default function Contact() {
           <input
             type="email"
             id="email"
+            name = "from_email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -78,6 +81,7 @@ export default function Contact() {
           </label>
           <textarea
             id="message"
+            name = "message"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             required
