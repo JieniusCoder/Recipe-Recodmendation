@@ -1,20 +1,42 @@
-import { NavLink } from "react-router-dom";
-import styles from "./style.module.css";
-import Home from "./Screens/Home";
-import About from "./Screens/About";
-import Upload from "./Screens/Upload";
-import Reports from "./Screens/Reports";
-import Contact from "./Screens/Contact";
+import './NavBar.css';
 
-export function NavBar() {
+interface NavBarProps {
+  onNavigate: (screen: string) => void;
+}
+
+const NavBar: React.FC<NavBarProps> = ({ onNavigate }) => {
   return (
-    <nav className={styles.navbar}>
-      <NavLink className={styles.navlink} to="/about">About</NavLink>
-      <NavLink className={styles.navlink} to="/contact">Upload</NavLink>
-      <NavLink className={styles.navlink} to="/contact">Reports</NavLink>
-      <NavLink className={styles.navlink} to="/contact">Contact</NavLink>
+    <nav className="navbar">
+      <ul>
+        <li>
+          <button onClick={() => onNavigate("home")}>
+            Home
+          </button>
+        </li>
+        <li >
+          <button onClick={() => onNavigate("about")}>
+            About
+          </button>
+        </li>
+        <li>
+          <button onClick={() => onNavigate("upload")}>
+            Upload
+          </button>
+        </li>
+        <li>
+          <button onClick={() => onNavigate("reports")}>
+            Reports
+          </button>
+        </li>
+        <li>
+          <button onClick={() => onNavigate("contact")}>
+            Contact
+          </button>
+        </li>
+
+      </ul>
     </nav>
   );
-}
+};
 
 export default NavBar;

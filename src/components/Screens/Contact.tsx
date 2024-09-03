@@ -1,6 +1,4 @@
 import React, { useRef, useState } from "react";
-import { render } from "@react-email/components";
-import { MailerSend, EmailParams, Sender, Recipient } from "mailersend";
 import emailjs from "emailjs-com";
 
 

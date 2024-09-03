@@ -2,11 +2,11 @@
 
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../../firebase";
-import { useUser } from "../UserContext";
+import { UserProvider, useUser } from "../UserContext";
 import TicTacToe from "./TicTacToe";
 import { TypeAnimation } from "react-type-animation";
 
-export default function Dashboard() {
+export default function Login() {
   const { setUser } = useUser();
 
   //log in function from firebase website
@@ -42,32 +42,34 @@ export default function Dashboard() {
   };
 
   return (
-    <div>
-      <div style={{marginBottom: "30px", marginTop: "30px"}}>
-        <TypeAnimation
-          sequence={[
-            "Welcome to Jie's Finance Manager!",
-            1000,
-            "Please sign in below to continue...",
-            1000,
-            "If you don't sign in",
-            1000,
-            "I will hate you forever!",
-            1000,
-          ]}
-          speed={50}
-          repeat={Infinity}
-          style={{ 
-            fontSize: "30px" , 
-            color: "black", 
-            textAlign: "center",
-            borderBottom: "1px solid black",
-          }}
-        />
+    <UserProvider>
+      <div>
+        <div style={{ marginBottom: "30px", marginTop: "30px" }}>
+          <TypeAnimation
+            sequence={[
+              "Welcome to Jie's Finance Manager!",
+              1000,
+              "Please sign in below to continue...",
+              1000,
+              "If you don't sign in",
+              1000,
+              "I will hate you forever!",
+              1000,
+            ]}
+            speed={50}
+            repeat={Infinity}
+            style={{
+              fontSize: "30px",
+              color: "black",
+              textAlign: "center",
+              borderBottom: "1px solid black",
+            }}
+          />
+        </div>
+        <button onClick={googleLogin}>Sign in with Google 🚀 </button>
+        <h3>Or play a game of Tic Tac Toe</h3>
+        <TicTacToe />
       </div>
-      <button onClick={googleLogin}>Sign in with Google 🚀 </button>
-      <h3>Or play a game of Tic Tac Toe</h3>
-      <TicTacToe />
-    </div>
+    </UserProvider>
   );
 }
