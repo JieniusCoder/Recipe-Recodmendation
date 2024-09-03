@@ -1,7 +1,7 @@
 export default function Reports() {
   return (
     <div>
-      <h1>Reports</h1>
+      <h1>Recipe</h1>
       <hr />
     </div>
 

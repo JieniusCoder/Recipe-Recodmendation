@@ -1,16 +1,20 @@
-import cat from '../../assets/Nemo_Cat.jpg';
+import cat from "../../assets/Nemo_Cat.jpg";
 
 export default function About() {
-    return (
-        <div>
-        <h1>This App is about me showing off my skills. I need a job and people need to see something cool</h1>
-        <p>Someone please hire me so I can buy food for my cat</p>
-        <p>I am broke and I need a job</p>
-        <p>My cat is hungry, he weights 500 pounds and eats a lot</p>
-        <img src={cat} alt="cat" style={{width: '200px', height: "200px"}}/>
-        <p>Please hire me so I can buy this kitty some food</p>
-        <p>Or this cat and I will have to spend our Christmas selling match on the street</p>
-        <hr />
-        </div>
-    );
+  return (
+    <div>
+      <h1>
+        This App was built for users to search for recipes based on ingredients
+        they have at home
+      </h1>
+      <p>
+        If you don't know the name of the ingredient, you can go to upload
+        section and upload an image to identify it
+      </p>
+      <p>I created this app so I can make food for my kitty</p>
+      <p>Nemo weights 500 pounds and eats a lot</p>
+      <img src={cat} alt="cat" style={{ width: "200px", height: "200px" }} />
+      <hr />
+    </div>
+  );
 }

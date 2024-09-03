@@ -1,25 +1,53 @@
 import React, { useRef, useState } from "react";
+import axios from "axios";
+import { Identity } from "mailersend";
 
 const Upload: React.FC = () => {
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [result, setResult] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleUpload = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
+    const file = fileInputRef.current?.files?.[0];
+    if (file) {
+      setSelectedImage(file);
+      identifyFood(file);
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      console.log("File selected:", file.name);
+  const identifyFood = async (file: File) => {
+    const formData = new FormData();
+    formData.append("image", file);
+    try {
+      const response = await axios.post(
+        "https://vision.googleapis.com/v1/images:annotate?key=YOUR_API_KEY",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      setResult(response.data.result || "Food Item Not Found");
+    } catch (error) {
+      console.error(error);
+      setResult("Error identifying food item");
     }
+  };
+
+  const fileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result as string);
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
   };
 
   return (
     <div>
       <h1>Upload</h1>
-      <p>Upload an image of your banking statement to generate a report</p>
+      <p>Upload an image of your ingredient to identify it</p>
       <br />
       <button
         onClick={handleUpload}
@@ -34,12 +62,6 @@ const Upload: React.FC = () => {
       >
         Upload An Image
       </button>
-      <input
-        type="file"
-        ref={fileInputRef}
-        onChange={handleFileChange}
-        style={{ display: "none" }}
-      />
       <hr />
     </div>
   );

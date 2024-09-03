@@ -47,7 +47,7 @@ export default function Login() {
         <div style={{ marginBottom: "30px", marginTop: "30px" }}>
           <TypeAnimation
             sequence={[
-              "Welcome to Jie's Finance Manager!",
+              "Welcome to Jie's Recipe App!",
               1000,
               "Please sign in below to continue...",
               1000,

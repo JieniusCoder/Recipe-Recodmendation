@@ -8,11 +8,6 @@ const NavBar: React.FC<NavBarProps> = ({ onNavigate }) => {
   return (
     <nav className="navbar">
       <ul>
-        <li>
-          <button onClick={() => onNavigate("home")}>
-            Home
-          </button>
-        </li>
         <li >
           <button onClick={() => onNavigate("about")}>
             About
@@ -25,7 +20,7 @@ const NavBar: React.FC<NavBarProps> = ({ onNavigate }) => {
         </li>
         <li>
           <button onClick={() => onNavigate("reports")}>
-            Reports
+            Recipe
           </button>
         </li>
         <li>

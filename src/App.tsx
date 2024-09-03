@@ -41,9 +41,10 @@ const App: React.FC = () => {
           <h3>User Logged in</h3>
           <h3>Name: {user.name}</h3>
           <h3>Email Address: {user.email}</h3>
-          <br />
-          <br />
+          
           <button onClick={logout}>Log out</button>
+          <br />
+          <br />
           <NavBar
             onNavigate={(section: string) => {
               if (section === "about") scrollToSection(aboutRef);
@@ -52,15 +53,20 @@ const App: React.FC = () => {
               if (section === "contact") scrollToSection(contactRef);
             }}
           />
+          <br />
+          <br />
           <div ref={aboutRef}>
             <About />
           </div>
+          <br />
           <div ref={uploadRef}>
             <Upload />
           </div>
+          <br />
           <div ref={reportsRef}>
             <Reports />
           </div>
+          <br />
           <div ref={contactRef}>
             <Contact />
           </div>
