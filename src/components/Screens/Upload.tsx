@@ -1,6 +1,5 @@
 import React, { useRef, useState } from "react";
 import axios from "axios";
-import { Identity } from "mailersend";
 
 const Upload: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -8,30 +7,57 @@ const Upload: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleUpload = () => {
-    const file = fileInputRef.current?.files?.[0];
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+      const file = fileInputRef.current?.files?.[0];
+      if (file) {
+        identifyFood(file);
+      }
+    }
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
     if (file) {
+      console.log("File selected:", file.name);
       setSelectedImage(file);
-      identifyFood(file);
     }
   };
 
   const identifyFood = async (file: File) => {
-    const formData = new FormData();
-    formData.append("image", file);
-    try {
-      const response = await axios.post(
-        "https://vision.googleapis.com/v1/images:annotate?key=YOUR_API_KEY",
-        formData,
+    const apiKey = 'AIzaSyAqlqc_InNWyLN_ZpPod3xTstKFDd77pI0';
+    const apiURL = `https://vision.googleapis.com/v1/images:annotate?key=${apiKey}`;
+    const content = await fileToBase64(file);
+    const imageString = content.split(",")[1];
+    console.log("Image64:");
+    console.log(imageString);
+
+    const requestBody = {
+      requests: [
         {
-          headers: {
-            "Content-Type": "multipart/form-data",
+          features: [
+            {
+              type: "LABEL_DETECTION",
+            },
+          ],
+          image: {
+            content: imageString,
           },
-        }
-      );
-      setResult(response.data.result || "Food Item Not Found");
+        },
+      ],
+    };
+
+    try {
+      const response = await axios.post(apiURL, requestBody, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log(response.data);
+      setResult(response.data.responses[0].labelAnnotations[0].description);
     } catch (error) {
       console.error(error);
-      setResult("Error identifying food item");
+      setResult("Error identifying food");
     }
   };
 
@@ -62,6 +88,23 @@ const Upload: React.FC = () => {
       >
         Upload An Image
       </button>
+      <input
+        type="file"
+        accept="image/*"
+        ref={fileInputRef}
+        onChange={handleFileChange}
+        style={{ display: "none" }}
+      />
+      <br />
+      {selectedImage && (
+        <img
+          src={URL.createObjectURL(selectedImage)}
+          alt="ingredient"
+          style={{ width: "200px", height: "200px" }}
+        />
+      )}
+      <br />
+      {result && <p>{result}</p>}
       <hr />
     </div>
   );
