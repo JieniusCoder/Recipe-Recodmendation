@@ -50,3 +50,9 @@ button{
   margin: 10px;
   border-radius: 10px;
 }
+
+label{
+  color: rgb(139, 18, 16);
+  font-size: 20px;
+  font-weight: bold;
+}
