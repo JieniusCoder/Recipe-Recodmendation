@@ -20,7 +20,7 @@ const NavBar: React.FC<NavBarProps> = ({ onNavigate }) => {
         </li>
         <li>
           <button onClick={() => onNavigate("reports")}>
-            Recipet
+            Recipes
           </button>
         </li>
         <li>

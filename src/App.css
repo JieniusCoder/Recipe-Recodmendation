@@ -25,6 +25,12 @@ hr{
   height: 3px;
 }
 
+ul{
+  color: rgb(139, 18, 16);
+  font-size: 20px;
+  font-weight: bold;
+}
+
 body{
   background-color: #e2d8d8;
   color: rgb(240, 236, 236);

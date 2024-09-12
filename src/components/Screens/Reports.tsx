@@ -2,32 +2,52 @@ import React, { useState } from "react";
 
 interface ReceiptItem {
   name: string;
-  quantity: number;
-  price: number;
 }
 
-const Reports:React.FC = () => {
+//Edaman ID: c24b1df0
+//Aplication keys: e47b0bcd58dcee39537ee987dfeea200
+
+const Reports: React.FC = () => {
   const [items, setItems] = useState<ReceiptItem[]>([]);
   const [name, setName] = useState<string>("");
-  const [quantity, setQuantity] = useState<number>(1);
-  const [price, setPrice] = useState<number>(0);
 
-  const addItem = (e: React.FormEvent) => {
-    e.preventDefault();
-    const newItem: ReceiptItem = { name, quantity, price };
-    setItems([...items, newItem]);
-    setName("");
-    setQuantity(1);
-    setPrice(0);
+  //Edaman Crendentials
+  const APP_ID = "c24b1df0";
+  const APP_KEY = "e47b0bcd58dcee39537ee987dfeea200";
+
+  const getRecipes = async () => {
+    // construct the API URL with the items names
+    const API_URL = `https://api.edamam.com/api/recipes/v2?type=any&q=${items.join(
+      ","
+    )}&app_id=${APP_ID}&app_key=${APP_KEY}`;
+
+    const response = await fetch(API_URL);
+
+    const data = await response.json();
+    console.log(data);
   };
 
-  const calculateTotal = () => {
-    return items.reduce((total, item) => total + item.quantity * item.price, 0);
+  const addItem = (e: React.FormEvent) => {
+    // check if item is already in the list
+    if (items.find((item) => item.name === name)) {
+      alert("Item already in the list");
+    } else {
+      e.preventDefault();
+      const newItem: ReceiptItem = { name };
+      setItems([...items, newItem]);
+      setName("");
+    }
+  };
+
+  const removeItem = (index: number) => {
+    const newItems = [...items];
+    newItems.splice(index, 1);
+    setItems(newItems);
   };
 
   return (
     <div>
-      <h1>Create Receipt</h1>
+      <h1>Create Recipe</h1>
 
       <form onSubmit={addItem}>
         <div>
@@ -39,45 +59,48 @@ const Reports:React.FC = () => {
             required
           />
         </div>
-        <div>
-          <label>Quantity:</label>
-          <input
-            type="number"
-            value={quantity}
-            onChange={(e) => setQuantity(Number(e.target.value))}
-            required
-          />
-        </div>
-        <div>
-          <label>Price:</label>
-          <input
-            type="number"
-            value={price}
-            onChange={(e) => setPrice(Number(e.target.value))}
-            required
-          />
-        </div>
         <button type="submit">Add Item</button>
       </form>
 
-      <h3>Receipt Suggestion:</h3>
+      {/* display all items */}
+      <h3>Items:</h3>
       {items.length > 0 ? (
-        <div>
-          <ul>
-            {items.map((item, index) => (
-              <p key={index}>
-                {item.quantity} x {item.name} @ ${item.price.toFixed(2)} each = $
-                {(item.price * item.quantity).toFixed(2)}
-              </p>
-            ))}
-          </ul>
-          <p>Total: ${calculateTotal().toFixed(2)}</p>
-        </div>
+        <ul>
+          {items.map((item, index) => (
+            <li key={index}>
+              {item.name}
+              <button
+                onClick={() => removeItem(index)}
+                style={{
+                  background: "transparent",
+                  border: "none",
+                  color: "red",
+                  cursor: "pointer",
+                  marginLeft: "8px",
+                }}
+              >
+                &times;  {/* This is the "x" symbol */}
+              </button>
+            </li>
+          ))}
+        </ul>
       ) : (
         <p>No items added yet.</p>
       )}
+
+      <button onClick={getRecipes}>Get Recipes</button>
+
+      {/* display the recipe */}
+
+      <h3>Receipt Suggestion:</h3>
+      {items.length > 0 ? (
+        <div>{/* add the recipe here*/}</div>
+      ) : (
+        <p>No items added yet.</p>
+      )}
+      <hr />
     </div>
   );
-}
+};
 
 export default Reports;
