@@ -1,36 +1,62 @@
 import React, { useRef, useState } from "react";
 import axios from "axios";
 
+interface LabelAnnotation{
+  description: string;
+  score: number;
+}
+
+interface ApiResponse {
+  responses: {
+    labelAnnotations: LabelAnnotation[];
+  }[];
+}
+
 const Upload: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [result, setResult] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleUpload = () => {
+  const confidenceThreshold = 0.7; //confidence socre Google Vision API
+
+  const excludeKeywords = [
+    "Food",
+    "Cuisine",
+    "Dish",
+    "Ingredient",
+    "Plate",
+    "Container",
+    "Utensil",
+    "Meal",
+    "Vegetable",
+    "Fruit",
+    "Vertebrate",
+    "Plant",
+    "Produce",
+    "Dairy",
+    "Dessert",
+    "Baked goods",
+    "Staple food",
+    "Recipe",
+    "Fast food",
+  ];
+
+  const handleUpload = async () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
       const file = fileInputRef.current?.files?.[0];
       if (file) {
+        await setSelectedImage(file);
         identifyFood(file);
       }
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      console.log("File selected:", file.name);
-      setSelectedImage(file);
-    }
-  };
-
   const identifyFood = async (file: File) => {
-    const apiKey = 'AIzaSyAqlqc_InNWyLN_ZpPod3xTstKFDd77pI0';
+    const apiKey = "AIzaSyAqlqc_InNWyLN_ZpPod3xTstKFDd77pI0";
     const apiURL = `https://vision.googleapis.com/v1/images:annotate?key=${apiKey}`;
     const content = await fileToBase64(file);
     const imageString = content.split(",")[1];
-    console.log("Image64:");
-    console.log(imageString);
 
     const requestBody = {
       requests: [
@@ -48,13 +74,19 @@ const Upload: React.FC = () => {
     };
 
     try {
-      const response = await axios.post(apiURL, requestBody, {
+      const response = await axios.post<ApiResponse>(apiURL, requestBody, {
         headers: {
           "Content-Type": "application/json",
         },
       });
       console.log(response.data);
-      setResult(response.data.responses[0].labelAnnotations[0].description);
+
+      const filteredLabels = response.data.responses[0].labelAnnotations.filter(
+        (label: LabelAnnotation) => {
+          return !excludeKeywords.includes(label.description) && label.score >= confidenceThreshold;
+        }
+      );
+      setResult(filteredLabels[0].description);
     } catch (error) {
       console.error(error);
       setResult("Error identifying food");
@@ -92,7 +124,6 @@ const Upload: React.FC = () => {
         type="file"
         accept="image/*"
         ref={fileInputRef}
-        onChange={handleFileChange}
         style={{ display: "none" }}
       />
       <br />
