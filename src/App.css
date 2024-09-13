@@ -1,71 +1,78 @@
-h1{
-  color: rgb(151, 16, 16);
+h1 {
+  color: #D32F2F;
   font-family: 'Courier New', Courier, monospace;
-  font-size: 20px;
+  font-size: 28px;
   font-weight: bold;
   background-clip: text;
   -webkit-background-clip: text;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
 }
 
-h2{
-  color: blue;
-  font-size: 20px;
+h2 {
+  color: #1976D2;
+  font-size: 24px;
   font-weight: bold;
 }
 
-h3{
-  color: green;
-  font-size: 20px;
+h3 {
+  color: #388E3C;
+  font-size: 22px;
   font-weight: bold;
 }
 
-hr{
-  color: rgb(166, 7, 7);
-  background-color: rgb(122, 4, 4);
-  height: 3px;
+hr {
+  color: #B71C1C;
+  background-color: #C62828;
+  height: 4px;
+  border: none;
 }
 
-ul{
-  color: rgb(139, 18, 16);
-  font-size: 20px;
+ul {
+  color: #D32F2F;
+  font-size: 18px;
   font-weight: bold;
+  list-style-type: none;
+  padding: 0;
 }
 
-body{
-  background-color: #e2d8d8;
-  color: rgb(240, 236, 236);
-  padding: 10px;
+body {
+  background-color: #F5F5F5;
+  color: #212121;
+  padding: 20px;
   text-align: center;
-  font-size: 20px;
-  font-weight: bold;
-  justify-content: space-evenly;
+  font-size: 18px;
+  font-weight: normal;
+  margin: 0;
 }
 
-p{
-  color: rgb(139, 18, 16);
-  font-size: 20px;
-  font-weight: bold;
+p {
+  color: #D32F2F;
+  font-size: 18px;
+  font-weight: normal;
 }
 
-button{
-  background-color: rgb(54, 49, 45);
-  color: rgb(240, 236, 236);
-  font-size: 20px;
+button {
+  background-color: #424242;
+  color: #E0E0E0;
+  font-size: 18px;
   font-weight: bold;
-  padding: 10px;
+  padding: 12px 20px;
   margin: 10px;
-  border-radius: 10px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
 }
 
-label{
-  color: rgb(139, 18, 16);
-  font-size: 20px;
+label {
+  color: #D32F2F;
+  font-size: 18px;
   font-weight: bold;
 }
 
 .recipes {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   flex-wrap: wrap;
-  padding: 30px;
+  gap: 20px;
+  padding: 20px;
 }
