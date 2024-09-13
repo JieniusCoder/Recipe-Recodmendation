@@ -41,12 +41,13 @@ const Upload: React.FC = () => {
     "Fast food",
   ];
 
-  const handleUpload = async () => {
+  //bugs need to press twice to upload
+  const handleUpload = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
       const file = fileInputRef.current?.files?.[0];
       if (file) {
-        await setSelectedImage(file);
+        setSelectedImage(file);
         identifyFood(file);
       }
     }
