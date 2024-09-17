@@ -45,11 +45,15 @@ const Upload: React.FC = () => {
   const handleUpload = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
-      const file = fileInputRef.current?.files?.[0];
-      if (file) {
-        setSelectedImage(file);
-        identifyFood(file);
-      }
+    }
+  };
+
+  const handleFileChange = () => {
+    const file = fileInputRef.current?.files?.[0];
+    if (file) {
+      setSelectedImage(file);
+  
+      identifyFood(file);
     }
   };
 
@@ -126,6 +130,7 @@ const Upload: React.FC = () => {
         accept="image/*"
         ref={fileInputRef}
         style={{ display: "none" }}
+        onChange={handleFileChange}
       />
       <br />
       {selectedImage && (
