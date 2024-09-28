@@ -1,5 +1,6 @@
 import { parse } from "path";
 import React, { useState } from "react";
+import { getRecipe } from "../../services/api";
 
 interface ReceiptItem {
   name: string;
@@ -38,50 +39,50 @@ const Reports: React.FC = () => {
 
   const [diet, setDiet] = useState<string[]>([]);
 
-  const dietRestrictions = [
-    "balanced",
-    "high-protein",
-    "low-fat",
-    "low-carb",
-  ];
+  const dietRestrictions = ["balanced", "high-protein", "low-fat", "low-carb"];
 
   //Edaman Crendentials
-  const APP_ID = "c24b1df0";
-  const APP_KEY = "e47b0bcd58dcee39537ee987dfeea200";
-
   const getRecipes = async () => {
-    //adjust API calls for dietand max calories
-    let API_URL = "";
+    //sends user input to api.ts
+    try {
+      const response = await getRecipe({
+        fields: [items.map((item) => item.name), diet],
+      });
+      console.log(response);
 
-    // API URL
-    if(isDietChecked){
-      API_URL = `https://api.edamam.com/api/recipes/v2?type=any&q=
-      ${items
-        .map((item) => item.name)
-        .join("%20")}&app_id=${APP_ID}&app_key=${APP_KEY}&diet=${diet.join("&diet=")}`;
-    } else {
-      // no calories or diet restrictions
-      API_URL = `https://api.edamam.com/api/recipes/v2?type=any&q=
-      ${items
-        .map((item) => item.name)
-        .join("%20")}&app_id=${APP_ID}&app_key=${APP_KEY}`;
+      //break down the response to set recipes
+      const data = response.data;
+      const recipeHits = data.hits.map((hit: any) => {
+        return {
+          label: hit.recipe.label,
+          image: hit.recipe.image,
+          url: hit.recipe.url,
+          calories: hit.recipe.calories,
+        };
+      });
+
+      setRecipes(recipeHits);
+    } catch (error) {
+      console.error("Error getting recipe:", error);
     }
-
-    const response = await fetch(API_URL);
-
-    const data = await response.json();
-
-    const recipeHits = data.hits.map((hit: any) => {
-      return {
-        label: hit.recipe.label,
-        image: hit.recipe.image,
-        url: hit.recipe.url,
-        calories: hit.recipe.calories,
-      };
-    });
-
-    setRecipes(recipeHits);
   };
+  // const getRecipes = async () => {
+  //   //adjust API calls for diet and max calories
+  //   let API_URL = "";
+
+  //   // API URL
+  //   if(isDietChecked){
+  //     API_URL = `https://api.edamam.com/api/recipes/v2?type=any&q=
+  //     ${items
+  //       .map((item) => item.name)
+  //       .join("%20")}&app_id=${APP_ID}&app_key=${APP_KEY}&diet=${diet.join("&diet=")}`;
+  //   } else {
+  //     // no calories or diet restrictions
+  //     API_URL = `https://api.edamam.com/api/recipes/v2?type=any&q=
+  //     ${items
+  //       .map((item) => item.name)
+  //       .join("%20")}&app_id=${APP_ID}&app_key=${APP_KEY}`;
+  //   }
 
   const addItem = (e: React.FormEvent) => {
     // check if item is already in the list
@@ -168,9 +169,7 @@ const Reports: React.FC = () => {
               }}
             >
               {dietRestrictions.map((restriction) => (
-                <option>
-                  {restriction}
-                </option>
+                <option>{restriction}</option>
               ))}
             </select>
             {/* display selected diet restrictions */}

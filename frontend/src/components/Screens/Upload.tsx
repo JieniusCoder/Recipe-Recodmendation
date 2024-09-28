@@ -1,5 +1,7 @@
 import React, { useRef, useState } from "react";
 import axios from "axios";
+import { getImage } from "../../services/api";
+import { get } from "http";
 
 interface LabelAnnotation{
   description: string;
@@ -58,8 +60,6 @@ const Upload: React.FC = () => {
   };
 
   const identifyFood = async (file: File) => {
-    const apiKey = "AIzaSyAqlqc_InNWyLN_ZpPod3xTstKFDd77pI0";
-    const apiURL = `https://vision.googleapis.com/v1/images:annotate?key=${apiKey}`;
     const content = await fileToBase64(file);
     const imageString = content.split(",")[1];
 
@@ -79,11 +79,7 @@ const Upload: React.FC = () => {
     };
 
     try {
-      const response = await axios.post<ApiResponse>(apiURL, requestBody, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await getImage(requestBody);
       console.log(response.data);
 
       const filteredLabels = response.data.responses[0].labelAnnotations.filter(
